@@ -1,0 +1,10 @@
+# Visual Studio project files.
+AvitoAPI.pyproj
+AvitoAPI.sln
+.vs
+
+# Python cache.
+__pycache__
+
+# Example script.
+Example.py

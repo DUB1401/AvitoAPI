@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools", "cython"]
+
+[project]
+name = "AvitoAPI"
+version = "0.1.0"
+description = "Имплементация методов клиентского API сайта Авито."
+authors = [
+	{name = "DUB1401", email="vlad.milosta@outlook.com"}
+]
+readme = "README.md"
+license = {file = "LICENSE"}
+requires-python = ">=3.10"
+dependencies = [
+	"requests"
+]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "License :: OSI Approved :: Apache Software License",
+    "Natural Language :: Russian",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+	"Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+	"Programming Language :: Python :: 3.12"
+]
+
+[project.urls]
+Documentation = "https://github.com/DUB1401/AvitoAPI/tree/main/docs"
+"Source Code" = "https://github.com/DUB1401/AvitoAPI"
+"Bug Tracker" = "https://github.com/DUB1401/AvitoAPI/issues"
+Changelog = "https://github.com/DUB1401/AvitoAPI/releases"
