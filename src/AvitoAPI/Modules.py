@@ -1,6 +1,8 @@
-from AvitoAPI.Types.ShortTermRent import Discounts, Instant
+from AvitoAPI.Types.ShortTermRent import *
 
+import datetime
 import requests
+import json
 
 class ShortTermRent:
 	"""
@@ -20,6 +22,67 @@ class ShortTermRent:
 		self.__Profile = int(profile)
 		# Метод выполнения запросов.
 		self.__Request = request_method
+		
+	def get_bookings(
+			self,
+			item_id: int | str,
+			date_start: datetime.datetime,
+			date_end: datetime.datetime,
+			with_unpaid: bool = True
+		) -> list[Booking] | None:
+		
+		"""
+		Возвращает список броней по объявлению.
+			item_id – идентификатор объявления;
+			date_start – дата начала выборки;
+			date_end – дата окончания выборки;
+			with_unpaid – указывает, добавлять ли в выборку неоплаченные брони.
+		"""
+		# Параметры запроса.
+		Params = {
+			"date_start": str(date_start.date()),
+			"date_end": str(date_end.date()),
+			"with_unpaid": with_unpaid
+		}
+		# Выполнение запроса.
+		Response = self.__Request("GET", f"https://api.avito.ru/realty/v1/accounts/{self.__Profile}/items/{item_id}/bookings", params = Params)
+		
+		# Если запрос успешен.
+		if Response.status_code == 200: 
+			# Буфер преобразования.
+			Bufer = list()
+			# Полученные данные.
+			Data = json.loads(Response.text)
+			
+			# Для каждого элемента.
+			for Element in Data["bookings"]:
+				# Сохранить преобразованные в объект данные.
+				Bufer.append(Booking(Element))
+				
+			# Перезапись ответа буфером.
+			Response = Bufer
+		
+		else:
+			# Обнуление запроса.
+			Response = None
+		
+		return Response
+		
+	def fill_estate_calendar(
+			self,
+			item_id: int | str,
+		    bookings: BookingsDates
+		) -> requests.Response:
+		"""
+		Заполняет календарь занятости объекта недвижимости.
+			item_id – идентификатор объявления;
+			bookings – даты бронирования объекта недвижимости.
+		"""
+
+		# Выполнение запроса.
+		Response = self.__Request("POST", f"https://api.avito.ru/core/v1/accounts/{self.__Profile}/items/{item_id}/bookings", json = {"bookings": bookings.get()})
+		
+		return Response
 		
 	def set_base_params(
 			self,
