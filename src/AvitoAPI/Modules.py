@@ -1,8 +1,42 @@
 from AvitoAPI.Types.ShortTermRent import *
+from AvitoAPI.Types.Info import *
 
 import datetime
 import requests
 import json
+
+class Info:
+	"""
+	Модуль API: информация о пользователе.
+	"""
+	
+	def __init__(self, profile: int | str, session: any | None = None):
+		"""
+		Модуль API: краткосрочная аренда.
+			profile – номер профиля Авито;
+			session – указатель на готовую сессию библиотеки requests.
+		"""
+
+		#---> Генерация динамических свойств.
+		#==========================================================================================#
+		# Номер профиля авито.
+		self.__Profile = int(profile)
+		# Модуль выполнения запросов.
+		self.__Requests = session if session != None else requests.Session()
+		
+	def get_balance(self) -> int | None:
+		"""
+		Возвращает баланс кошелька.
+		"""
+		
+		# Выполнение запроса.
+		Response = self.__Requests("GET", f"https://api.avito.ru/core/v1/accounts/{self.__Profile}/balance/")
+		# Интерпретация ответа.
+		Data = json.loads(Response.text)
+		# Объектное представление баланса.
+		BalanceObject = Balance(Data["real"], Data["bonus"])
+		
+		return BalanceObject
 
 class ShortTermRent:
 	"""

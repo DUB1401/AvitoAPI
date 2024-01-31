@@ -1,4 +1,4 @@
-from AvitoAPI.Modules import ShortTermRent
+from AvitoAPI.Modules import Info, ShortTermRent
 from threading import Thread
 from time import sleep
 
@@ -211,6 +211,13 @@ class Profile:
 	# >>>>> МОДУЛИ API <<<<< #
 	#==========================================================================================#
 	
+	def info(self):
+		"""
+		Модуль API: информация о пользователе.
+		"""
+		
+		return Info(self.__Profile, self.request)
+
 	def short_term_rent(self):
 		"""
 		Модуль API: краткосрочная аренда.

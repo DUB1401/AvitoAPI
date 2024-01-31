@@ -6,7 +6,7 @@ name = "AvitoAPI"
 version = "0.1.0"
 description = "Имплементация методов клиентского API сайта Авито."
 authors = [
-	{name = "DUB1401", email="vlad.milosta@outlook.com"}
+	{name = "DUB1401", email = "vlad.milosta@outlook.com"}
 ]
 readme = "README.md"
 license = {file = "LICENSE"}
