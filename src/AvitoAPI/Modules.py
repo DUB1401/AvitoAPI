@@ -9,19 +9,19 @@ class ShortTermRent:
 	Модуль API: краткосрочная аренда.
 	"""
 	
-	def __init__(self, profile: int | str, request_method: any):
+	def __init__(self, profile: int | str, session: any | None = None):
 		"""
 		Модуль API: краткосрочная аренда.
 			profile – номер профиля Авито;
-			request_method – указатель на метод выполнения запросов.
+			session – указатель на готовую сессию библиотеки requests.
 		"""
 
 		#---> Генерация динамических свойств.
 		#==========================================================================================#
 		# Номер профиля авито.
 		self.__Profile = int(profile)
-		# Метод выполнения запросов.
-		self.__Request = request_method
+		# Модуль выполнения запросов.
+		self.__Requests = session if session != None else requests.Session()
 		
 	def get_bookings(
 			self,
@@ -45,7 +45,7 @@ class ShortTermRent:
 			"with_unpaid": with_unpaid
 		}
 		# Выполнение запроса.
-		Response = self.__Request("GET", f"https://api.avito.ru/realty/v1/accounts/{self.__Profile}/items/{item_id}/bookings", params = Params)
+		Response = self.__Requests("GET", f"https://api.avito.ru/realty/v1/accounts/{self.__Profile}/items/{item_id}/bookings", params = Params)
 		
 		# Если запрос успешен.
 		if Response.status_code == 200: 
@@ -80,7 +80,7 @@ class ShortTermRent:
 		"""
 
 		# Выполнение запроса.
-		Response = self.__Request("POST", f"https://api.avito.ru/core/v1/accounts/{self.__Profile}/items/{item_id}/bookings", json = {"bookings": bookings.get()})
+		Response = self.__Requests("POST", f"https://api.avito.ru/core/v1/accounts/{self.__Profile}/items/{item_id}/bookings", json = {"bookings": bookings.get()})
 		
 		return Response
 		
@@ -116,6 +116,20 @@ class ShortTermRent:
 		if night_price != None: Body["night_price"] = int(night_price)
 		if refund != None: Body["refund"] = {"days": int(refund)}
 		# Выполнение запроса.
-		Response = self.__Request("POST", f"https://api.avito.ru/realty/v1/items/{item_id}/base", json = Body)
+		Response = self.__Requests("POST", f"https://api.avito.ru/realty/v1/items/{item_id}/base", json = Body)
+		
+		return Response
+	
+	def update_parameters(self, item_id: int | str, periods: RentPeriods) -> requests.Response:
+		"""
+		Обновляет параметры для переданных диапазонов дат.
+		"""
+		
+		# Тело запроса.
+		Body = {
+			"prices": periods.get()
+		}
+		# Выполнение запроса.
+		Response = self.__Requests("POST", f"https://api.avito.ru/realty/v1/accounts/{self.__Profile}/items/{item_id}/prices", json = Body)
 		
 		return Response
