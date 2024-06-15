@@ -12,6 +12,22 @@ class Profile:
 	"""
 	
 	#==========================================================================================#
+	# >>>>> МОДУЛИ API <<<<< #
+	#==========================================================================================#
+	
+	@property
+	def info(self) -> Info:
+		"""Модуль API: информация о пользователе."""
+		
+		return Info(self.__Profile, self.request)
+
+	@property
+	def short_term_rent(self) -> ShortTermRent:
+		"""Модуль API: краткосрочная аренда."""
+		
+		return ShortTermRent(self.__Profile, self.request)
+
+	#==========================================================================================#
 	# >>>>> ПРИВАТНЫЕ МЕТОДЫ <<<<< #
 	#==========================================================================================#
 			
@@ -88,7 +104,7 @@ class Profile:
 		# Если указано, запустить поток надзиратель.
 		if autorefresh == True and use_supervisor == True : self.__Supervisor.start()
 			
-	def getAccessToken(self, bearer: bool = True) -> str | None:
+	def get_access_token(self, bearer: bool = True) -> str | None:
 		"""
 		Возвращает токен доступа API Авито.
 			bearer – указывает, нужно ли добавлять к токену идентификатор типа.
@@ -206,21 +222,3 @@ class Profile:
 		Response = self.__Session.request(method = method.upper(), url = url, headers = headers, params = params, json = json)
 		
 		return Response
-	
-	#==========================================================================================#
-	# >>>>> МОДУЛИ API <<<<< #
-	#==========================================================================================#
-	
-	def info(self):
-		"""
-		Модуль API: информация о пользователе.
-		"""
-		
-		return Info(self.__Profile, self.request)
-
-	def short_term_rent(self):
-		"""
-		Модуль API: краткосрочная аренда.
-		"""
-		
-		return ShortTermRent(self.__Profile, self.request)

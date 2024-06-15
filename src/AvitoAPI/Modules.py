@@ -6,11 +6,9 @@ import requests
 import json
 
 class Info:
-	"""
-	Модуль API: информация о пользователе.
-	"""
+	"""Модуль API: информация о пользователе."""
 	
-	def __init__(self, profile: int | str, session: any | None = None):
+	def __init__(self, profile: int | str, session: any = None):
 		"""
 		Модуль API: краткосрочная аренда.
 			profile – номер профиля Авито;
@@ -25,9 +23,7 @@ class Info:
 		self.__Requests = session if session != None else requests.Session()
 		
 	def get_balance(self) -> int | None:
-		"""
-		Возвращает баланс кошелька.
-		"""
+		"""Возвращает баланс кошелька."""
 		
 		# Выполнение запроса.
 		Response = self.__Requests("GET", f"https://api.avito.ru/core/v1/accounts/{self.__Profile}/balance/")
@@ -37,13 +33,23 @@ class Info:
 		BalanceObject = Balance(Data["real"], Data["bonus"])
 		
 		return BalanceObject
+	
+	def get_info(self) -> dict | None:
+		"""Возвращает информацию о пользователе."""
+		
+		# Выполнение запроса.
+		Response = self.__Requests("GET", f"https://api.avito.ru/core/v1/accounts/self")
+		# Интерпретация ответа.
+		Data = json.loads(Response.text)
+		# Объектное представление баланса.
+		BalanceObject = ProfileInfo(Data)
+		
+		return BalanceObject
 
 class ShortTermRent:
-	"""
-	Модуль API: краткосрочная аренда.
-	"""
+	"""Модуль API: краткосрочная аренда."""
 	
-	def __init__(self, profile: int | str, session: any | None = None):
+	def __init__(self, profile: int | str, session: any = None):
 		"""
 		Модуль API: краткосрочная аренда.
 			profile – номер профиля Авито;
@@ -157,6 +163,8 @@ class ShortTermRent:
 	def update_parameters(self, item_id: int | str, periods: RentPeriods) -> requests.Response:
 		"""
 		Обновляет параметры для переданных диапазонов дат.
+			item_id – идентификатор объявления;
+			periods – параметры аредны в диапазонах дат.
 		"""
 		
 		# Тело запроса.

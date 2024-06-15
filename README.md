@@ -33,7 +33,7 @@
 - [ ] Тарифы
 - [ ] Информация о пользователе
 	- [ ] Получение истории операций пользователя
-	- [ ] Получение информации об авторизованном пользователе
+	- [x] Получение информации об авторизованном пользователе
 	- [x] Получение баланса кошелька пользователя
 
 ## Порядок установки и использования
@@ -66,7 +66,7 @@ ItemDiscounts = Discounts()
 # Добавление скидки: 5% при бронировании от 3-ёх ночей.
 ItemDiscounts.on_3_days(5)
 # Установка базовых параметров для краткосрочно арендуемой квартиры.
-Response = User.short_term_rent().set_base_params(ITEM_ID, discounts = ItemDiscounts, night_price = 3500)
+Response = User.short_term_rent.set_base_params(ITEM_ID, discounts = ItemDiscounts, night_price = 3500)
 
 # Если запрос успешно выполнен.
 if Response.status_code == 200:
