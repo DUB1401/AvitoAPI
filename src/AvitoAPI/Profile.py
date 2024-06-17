@@ -137,7 +137,7 @@ class Profile:
 		# Удаление заголовка авторизации в нижнем регистре.
 		if "authorization" in headers.keys(): del headers["authorization"]
 		# Подстановка токена.
-		headers["Authorization"] = self.getAccessToken()
+		headers["Authorization"] = self.get_access_token()
 		# Отправка GET-запроса.
 		Response = self.__Session.get(url, headers = headers, params = params, json = json)
 		
@@ -157,7 +157,7 @@ class Profile:
 		# Удаление заголовка авторизации в нижнем регистре.
 		if "authorization" in headers.keys(): del headers["authorization"]
 		# Подстановка токена.
-		headers["Authorization"] = self.getAccessToken()
+		headers["Authorization"] = self.get_access_token()
 		# Отправка GET-запроса.
 		Response = self.__Session.post(url, headers = headers, params = params, json = json)
 		
@@ -217,7 +217,7 @@ class Profile:
 		# Удаление заголовка авторизации в нижнем регистре.
 		if "authorization" in headers.keys(): del headers["authorization"]
 		# Подстановка токена.
-		headers["Authorization"] = self.getAccessToken()
+		headers["Authorization"] = self.get_access_token()
 		# Отправка GET-запроса.
 		Response = self.__Session.request(method = method.upper(), url = url, headers = headers, params = params, json = json)
 		

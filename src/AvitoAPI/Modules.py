@@ -22,7 +22,7 @@ class Info:
 		# Модуль выполнения запросов.
 		self.__Requests = session if session != None else requests.Session()
 		
-	def get_balance(self) -> int | None:
+	def get_balance(self) -> Balance | None:
 		"""Возвращает баланс кошелька."""
 		
 		# Выполнение запроса.
@@ -34,7 +34,7 @@ class Info:
 		
 		return BalanceObject
 	
-	def get_info(self) -> dict | None:
+	def get_info(self) -> ProfileInfo | None:
 		"""Возвращает информацию о пользователе."""
 		
 		# Выполнение запроса.
