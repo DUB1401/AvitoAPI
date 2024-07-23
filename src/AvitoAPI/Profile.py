@@ -1,3 +1,5 @@
+from . import Logger
+
 from AvitoAPI.Modules import Info, ShortTermRent
 from threading import Thread
 from time import sleep
@@ -56,9 +58,9 @@ class Profile:
 			# Если поток обновления токена остановлен.
 			if self.__Updater.is_alive() == False:
 				# Запись в лог предупреждения: поток обновления токена был остановлен.
-				if self.__Logging: logging.warning(f"Profile: {self.__ProfileID}. Token updater thread was stopped.")
+				if self.__Logging: Logger.warning(f"Profile: {self.__Profile}. Token updater thread was stopped.")
 				# Реинициализация потока обновления токена.
-				self.__Updater = Thread(target = self.__UpdaterThread, name = f"Profile {self.__ProfileID} supervisor thred.")
+				self.__Updater = Thread(target = self.__UpdaterThread, name = f"Profile {self.__Profile} supervisor thred.")
 				# Запуск потока.
 				self.__Updater.start()
 				
@@ -189,16 +191,17 @@ class Profile:
 			# Если запрос содержит ошибку.
 			if "error" in self.__AccessToken.keys():
 				# Запись в лог ошибки: не удалось обновить токен доступа.
-				if self.__Logging: logging.error(f"Profile: {self.__ProfileID}. Unable to refresh access token. Description: \"" + self.__AccessToken["error_description"].rstrip('.') + "\".")
+				if self.__Logging: Logger.error(f"Profile: {self.__Profile}. Unable to refresh access token. Description: \"" + self.__AccessToken["error_description"].rstrip('.') + "\".")
 				# Обнуление токена доступа.
 				self.__AccessToken = None
 				
 			else:
 				# Запись в лог сообщения: токен обновлён.
-				if self.__Logging: logging.info(f"Profile: {self.__ProfileID}. Token refreshed.")
+				if self.__Logging: Logger.info(f"Profile: {self.__Profile}. Token refreshed.")
+
 		else:
 			# Запись в лог ошибки: не удалось обновить токен доступа.
-			if self.__Logging: logging.error(f"Profile: {self.__ProfileID}. Unable to refresh access token. Response code: " + str(Response.status_code) + ".")
+			if self.__Logging: Logger.error(f"Profile: {self.__Profile}. Unable to refresh access token. Response code: " + str(Response.status_code) + ".")
 			# Обнуление токена доступа.
 			self.__AccessToken = None
 
